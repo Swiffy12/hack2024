@@ -12,6 +12,7 @@ async function bootstrap() {
 		.setDescription('MatchKeeper')
 		.setVersion('1.0')
 		.addTag('auth')
+		.addTag('users')
 		.addBearerAuth()
 		.build()
 	const document = SwaggerModule.createDocument(app, swaggerConfig)
