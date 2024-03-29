@@ -1,0 +1,46 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model accounts {
+  id            Int           @id(map: "players_id_pkey") @default(autoincrement()) @db.SmallInt
+  nickname      String        @unique(map: "accounts_nickname_unikey") @db.VarChar
+  roleId        Int           @db.SmallInt @map("role_id")
+  passwordHash  String        @db.VarChar @map("password_hash")
+  accountRoles  account_roles @relation(fields: [roleId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "accounts_account_roles_fk")
+}
+
+model games {
+  id           Int          @id(map: "games_id_pkey") @default(autoincrement()) @db.SmallInt
+  score        String?      @db.VarChar
+  winner       String?      @db.VarChar
+  playerIds    Int[]        @db.SmallInt @map("player_ids")
+  tournmentId  Int?         @db.SmallInt @map("tournment_id")
+  tournaments  tournaments? @relation(fields: [tournmentId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "games_tournaments_fkey")
+}
+
+model table_statuses {
+  id          Int           @id(map: "table_statuses_id_pkey") @default(autoincrement()) @db.SmallInt
+  status      String        @unique(map: "table_statuses_status_unikey") @db.VarChar
+  tournaments tournaments[]
+}
+
+model tournaments {
+  id             Int            @id(map: "tournaments_id_pkey") @default(autoincrement()) @db.SmallInt
+  statusId       Int            @db.SmallInt @map("status_id")
+  playerIds      Int[]          @db.SmallInt @map("player_ids")
+  winner         String?        @db.VarChar
+  games          games[]
+  tableStatuses  table_statuses @relation(fields: [statusId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "tournaments_table_statuses_fkey")
+}
+
+model account_roles {
+  id       Int        @id(map: "account_roles_id_pkey") @default(autoincrement()) @db.SmallInt
+  role     String     @db.VarChar
+  accounts accounts[]
+}
