@@ -8,9 +8,10 @@ import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth/auth.guard';
 import { RolesGuard } from './roles/roles.guard';
 import { TournmentsModule } from './tournments/tournments.module';
+import { GamesModule } from './games/games.module';
 
 @Module({
-  imports: [AuthModule, UsersModule, PrismaModule, TournmentsModule],
+  imports: [AuthModule, UsersModule, PrismaModule, TournmentsModule, GamesModule],
   controllers: [AppController],
   providers: [AppService,
     {
