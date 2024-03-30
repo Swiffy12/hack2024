@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
@@ -13,5 +14,9 @@ export class UsersService {
 		})
 
 		return findOneUser
+	}
+
+	async getUserInfo(user: User) {
+		return user
 	}
 }
